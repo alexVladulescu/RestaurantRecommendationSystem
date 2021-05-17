@@ -1,0 +1,22 @@
+<html>
+<head>
+	
+</head>
+	<body>
+		<form method="post" action="{{ url_for('data') }}">
+			<fieldset>
+				<legend>SAMPLE FORM</legend>
+				<ul>
+					<table>
+						<tr>Cuisines:<input type="text" name="cuisine"><br></tr>
+						<tr>Contry:<input type="text" name="country"><br></tr>
+						<tr>City:<input type="text" name="city"><br></tr>
+						<tr>Currency:<input type="text" name="currency"><br></tr>
+						<tr><input type="submit" value="Submit"></tr>
+					</table>
+				</ul>
+			</fieldset>
+		</form>
+		<p>{{message}}</p>
+	</body>
+</html>
