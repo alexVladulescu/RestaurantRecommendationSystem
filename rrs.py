@@ -49,16 +49,39 @@ def data():
     columns, data = read_data_file()
     country_codes = read_country_codes()
     cuisines = request.form['cuisine']
-    print(cuisines)
+    country = request.form['country']
+    city = request.form['city']
+    currency = request.form['currency']
     message = ""
+
+    total = dict()
+
+    top_list = dict()
+
     for d in data:
         current_cuisines = dict()
         for cuisine in cuisines.split(", "):
             current_cuisines[cuisine] = 0
             if cuisine in d['Cuisines']:
                 current_cuisines[cuisine] += 1
-        for k, v in current_cuisines.items():
-            message += d['Restaurant Name'] + " - " + d['Cuisines'] + " - " + k + " - " + str(v/len(d['Cuisines'].split(', '))) + "\n"
+
+        current_country = 0
+        if country_codes[int(d["Country Code"])] == country:
+            current_country += 1
+
+        current_city = 0
+        if city == d["City"]:
+            current_city += 1
+
+        current_currency = 0
+        if currency == d["Currency"]:
+            current_currency += 1
+
+        top_list[d["Restaurant Name"]] = sum(current_cuisines.values())/len(d['Cuisines'].split(', ')) + current_country + current_city + current_currency
+
+    for key, value in {k: v for k, v in sorted(top_list.items(), key=lambda item: item[1], reverse=True)}.items():
+        message += "{} - {}\n".format(key, str(value))
+
     return render_template('data.html', message=message)
 
 app.run(host='localhost', port=5000)
